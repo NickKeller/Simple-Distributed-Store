@@ -10,7 +10,7 @@ bool run_test(std::vector<ProductSpec>& product_specs, const int num_max_threads
 void thread_task(std::string server_addr, ProductSpec& p_spec, ProductQueryResult& pq_result,  int query_id, bool& is_done);
 
 int main(int argc, char** argv) {
-  
+
   int num_max_threads;
   std::string server_addr;
   if (argc == 3) {
@@ -33,7 +33,7 @@ int main(int argc, char** argv) {
   	return EXIT_FAILURE;
   }
 
-  return run_test(product_specs, num_max_threads, server_addr) 
+  return run_test(product_specs, num_max_threads, server_addr)
       ? EXIT_SUCCESS : EXIT_FAILURE;
 }
 
@@ -50,7 +50,7 @@ bool run_test(std::vector<ProductSpec>& product_specs, const int num_max_threads
   for (int i = 0; i < num_max_threads; ++i) {
     threads[i] = new std::thread(warm_up, std::ref(threads_is_done[i]));
   }
-  
+
   std::vector<ProductQueryResult> test_results(product_specs.size());
 
   size_t thread_ind = 0;
@@ -58,13 +58,13 @@ bool run_test(std::vector<ProductSpec>& product_specs, const int num_max_threads
     while (!threads_is_done[thread_ind]) {
       thread_ind = (thread_ind + 1) % num_max_threads;
     }
-    
+
     threads[thread_ind]->join();
     delete threads[thread_ind];
-    
-    threads[thread_ind] = new std::thread(thread_task, 
+
+    threads[thread_ind] = new std::thread(thread_task,
           server_addr, std::ref(product_specs[i]), std::ref(test_results[i]), i, std::ref(threads_is_done[i]));
-    
+
     thread_ind = (thread_ind + 1) % num_max_threads;
   }
 
@@ -85,7 +85,7 @@ bool run_test(std::vector<ProductSpec>& product_specs, const int num_max_threads
     }
   }
   std::cout << std::endl;
-  
+
   return true;
 }
 
@@ -95,4 +95,3 @@ void thread_task(const std::string server_addr, ProductSpec& p_spec, ProductQuer
     std::cout << "\nStore failed to receive reply for: " << p_spec.name_ << ", query id: " << query_id <<  std::endl;
   }
 }
-

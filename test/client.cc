@@ -1,5 +1,5 @@
 #include <memory>
-#include <stdlib.h> 
+#include <stdlib.h>
 
 #include <grpc++/grpc++.h>
 
@@ -27,14 +27,13 @@ class StoreClient {
 
 
 bool run_client(const std::string& server_addr, const std::string& product_name, ProductQueryResult& pq_result) {
-
   StoreClient store_client(grpc::CreateChannel(server_addr, grpc::InsecureChannelCredentials()));
   return store_client.getProducts(product_name, pq_result);
 }
 
 
 StoreClient::StoreClient(std::shared_ptr<Channel> channel)
-  : stub_(Store::NewStub(channel)) 
+  : stub_(Store::NewStub(channel))
   {}
 
 bool StoreClient::getProducts(const ProductSpec& product_spec, ProductQueryResult& query_result) {
@@ -43,7 +42,6 @@ bool StoreClient::getProducts(const ProductSpec& product_spec, ProductQueryResul
 
   ProductReply reply;
   ClientContext context;
-
   Status status = stub_->getProducts(&context, query, &reply);
 
   if (!status.ok()) {
