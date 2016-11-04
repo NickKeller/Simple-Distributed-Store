@@ -14,7 +14,7 @@ vpath %.proto $(PROTOS_PATH)
 
 all: system-check store
 
-store: vendor.pb.o vendor.grpc.pb.o store.pb.o store.grpc.pb.o store.o threadpool.o
+store: vendor.pb.o vendor.grpc.pb.o store.pb.o store.grpc.pb.o store.o
 	$(CXX) $^ $(LDFLAGS) -o $@
 
 .PRECIOUS: %.grpc.pb.cc
